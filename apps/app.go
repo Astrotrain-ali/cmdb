@@ -3,7 +3,7 @@ package apps
 import (
 	"fmt"
 
-	"gitee.com/max-astrotrain/restful-api-demo/apps/host"
+	"github.com/Astrotrain-ali/cmdb/apps/host"
 	"github.com/gin-gonic/gin"
 )
 
