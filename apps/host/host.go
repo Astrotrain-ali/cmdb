@@ -5,7 +5,6 @@ import (
 	"time"
 )
 
-// host app service接口定义
 // host app service 的接口定义
 type Service interface {
 	// 录入主机
