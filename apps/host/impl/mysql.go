@@ -1,8 +1,6 @@
 package impl
 
 import (
-	"database/sql"
-
 	"github.com/infraboard/mcube/logger"
 	"github.com/infraboard/mcube/logger/zap"
 )
@@ -11,7 +9,7 @@ import (
 // 这样写会造成conf.C()并准备好，造成conf.C().MySQL.GetDB()该方法panic
 
 // 把对象的注册和对象的初始化独立出来
-var impl = &HostServiceImpl{}
+//var _ host.Service = (*HostServiceImpl)(nil)
 
 // NewHostServiceImpl 保证调用该函数之前，全局conf对象已经初始化
 func NewHostServiceImpl() *HostServiceImpl {
@@ -22,38 +20,38 @@ func NewHostServiceImpl() *HostServiceImpl {
 		// 		1. logger全局实例
 		// 		2. logger level的动态调整，logrus不支持level动态调整
 		// 		3. 加入日志轮转功能的集合
-		l:  zap.L().Named("Host"),
-		db: conf.C().MySQL.GetDB(),
+		l: zap.L().Named("Host"),
+		//db: conf.C().MySQL.GetDB(),
 	}
 }
 
 type HostServiceImpl struct {
-	l  logger.Logger
-	db *sql.DB
+	l logger.Logger
+	//db *sql.DB
 }
 
-// 只需要保证 全局对象Config和全局Logger已经加载完成
-func (i *HostServiceImpl) Config() {
-	// Host service的子loggger
-	// 封装的zap让其满足logger接口
-	// 为什么要封装：
-	// 		1. logger全局实例
-	// 		2. logger level的动态调整，logrus不支持level动态调整
-	// 		3. 加入日志轮转功能的集合
-	i.l = zap.L().Named("Host")
-	i.db = conf.C().MySQL.GetDB()
-}
+// // 只需要保证 全局对象Config和全局Logger已经加载完成
+// func (i *HostServiceImpl) Config() {
+// 	// Host service的子loggger
+// 	// 封装的zap让其满足logger接口
+// 	// 为什么要封装：
+// 	// 		1. logger全局实例
+// 	// 		2. logger level的动态调整，logrus不支持level动态调整
+// 	// 		3. 加入日志轮转功能的集合
+// 	i.l = zap.L().Named("Host")
+// 	i.db = conf.C().MySQL.GetDB()
+// }
 
 // 返回服务的名称
-func (i *HostServiceImpl) Name() string {
-	return host.AppName
-}
+// func (i *HostServiceImpl) Name() string {
+// 	return host.AppName
+// }
 
 // _ import app 自动执行注册逻辑
-func init() {
-	// 对象注册到IOC层
-	apps.RegistryImpl(impl)
-}
+// func init() {
+// 	// 对象注册到IOC层
+// 	// apps.RegistryImpl(impl)
+// }
 
 // _ import app 自动执行注册逻辑
 

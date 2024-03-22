@@ -1,0 +1,25 @@
+[app]
+name = "demo"
+host = "0.0.0.0"
+port = "8030"
+key  = "this is your app key"
+addr = "0.0.0.0"
+
+[mysql]
+host = "127.0.0.1"
+port = "3306"
+username = "root"
+password = "123456"
+database = "test"
+
+[log]
+#	// DebugLevel: "debug",
+#	// InfoLevel:  "info",
+#	// WarnLevel:  "warning",
+#	// ErrorLevel: "error",
+#	// FatalLevel: "fatal",
+#	// PanicLevel: "panic",
+level = "debug"
+dir = "logs"
+format = "text"
+to = "stdout"

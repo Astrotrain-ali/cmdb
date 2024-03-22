@@ -44,9 +44,9 @@ type Host struct {
 	*Describe
 }
 
-func (h *Host) Validate() error {
-	return validate.Struct(h)
-}
+// func (h *Host) Validate() error {
+// 	return validate.Struct(h)
+// }
 
 func (h *Host) InjectDefault() {
 	if h.CreateAt == 0 {
