@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	version "github.com/Astrotrain-ali/cmdb/vsersion"
+	version "github.com/Astrotrain-ali/cmdb/version"
 	"github.com/spf13/cobra"
 )
 
