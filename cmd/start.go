@@ -8,6 +8,7 @@ import (
 
 	"github.com/Astrotrain-ali/cmdb/apps"
 	"github.com/Astrotrain-ali/cmdb/conf"
+	"github.com/Astrotrain-ali/cmdb/protocol"
 	"github.com/infraboard/mcube/logger"
 	"github.com/infraboard/mcube/logger/zap"
 	"github.com/spf13/cobra"

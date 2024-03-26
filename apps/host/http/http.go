@@ -2,6 +2,7 @@ package http
 
 import (
 	"github.com/Astrotrain-ali/cmdb/apps"
+	"github.com/Astrotrain-ali/cmdb/apps/host"
 	"github.com/gin-gonic/gin"
 )
 
