@@ -4,32 +4,31 @@ import (
 	"context"
 
 	"github.com/Astrotrain-ali/cmdb/apps/host"
-	"github.com/infraboard/mcube/logger"
 )
 
 // 业务处理层（Controll层）
 func (i *HostServiceImpl) CreateHost(ctx context.Context, ins *host.Host) (*host.Host, error) {
 	// 先注释打印日志，后期需要的话再打开
 	// 直接打印日志
-	i.l.Named("Create").Debug("create host")
-	i.l.Info("create host")
-	// 带Format的日志打印，fmt.Sprintf()
-	i.l.Debugf("create host %s", ins.Name)
-	// 携带额外的meta数据， 常用于trace系统
-	i.l.With(logger.NewAny("request-id", "req01")).Debug("create host with meta kv")
+	// i.l.Named("Create").Debug("create host")
+	// i.l.Info("create host")
+	// // 带Format的日志打印，fmt.Sprintf()
+	// i.l.Debugf("create host %s", ins.Name)
+	// // 携带额外的meta数据， 常用于trace系统
+	// i.l.With(logger.NewAny("request-id", "req01")).Debug("create host with meta kv")
 
-	// // 校验数据合法性
-	// if err := ins.Validate(); err != nil {
-	// 	return nil, err
-	// }
+	// 校验数据合法性
+	if err := ins.Validate(); err != nil {
+		return nil, err
+	}
 
 	// 默认值填充
 	ins.InjectDefault()
 
-	// // 有dao模块 复制把对象入库
-	// if err := i.save(ctx, ins); err != nil {
-	// 	return nil, err
-	// }
+	// 有dao模块 复制把对象入库
+	if err := i.save(ctx, ins); err != nil {
+		return nil, err
+	}
 
 	return ins, nil
 }

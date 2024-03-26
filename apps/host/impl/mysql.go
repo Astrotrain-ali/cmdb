@@ -1,6 +1,9 @@
 package impl
 
 import (
+	"database/sql"
+
+	"github.com/Astrotrain-ali/cmdb/conf"
 	"github.com/infraboard/mcube/logger"
 	"github.com/infraboard/mcube/logger/zap"
 )
@@ -20,14 +23,14 @@ func NewHostServiceImpl() *HostServiceImpl {
 		// 		1. logger全局实例
 		// 		2. logger level的动态调整，logrus不支持level动态调整
 		// 		3. 加入日志轮转功能的集合
-		l: zap.L().Named("Host"),
-		//db: conf.C().MySQL.GetDB(),
+		l:  zap.L().Named("Host"),
+		db: conf.C().MySQL.GetDB(),
 	}
 }
 
 type HostServiceImpl struct {
-	l logger.Logger
-	//db *sql.DB
+	l  logger.Logger
+	db *sql.DB
 }
 
 // // 只需要保证 全局对象Config和全局Logger已经加载完成

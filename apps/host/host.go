@@ -1,22 +1,21 @@
 package host
 
 import (
-	"context"
+	"net/http"
+	"strconv"
 	"time"
+
+	"github.com/go-playground/validator/v10"
 )
 
-// host app service 的接口定义
-type Service interface {
-	// 录入主机
-	CreateHost(context.Context, *Host) (*Host, error)
-	// 查询主机列表
-	QueryHost(context.Context, *QueryHostRequest) (*HostSet, error)
-	// 查询主机详情
-	DescribeHost(context.Context, *DescribeHostRequest) (*Host, error)
-	// 主机更新
-	UpdateHost(context.Context, *UpdateHostRequest) (*Host, error)
-	// 主机删除, 比如前端需要打印当前删除主机的Ip或者其他信息
-	DeleteHost(context.Context, *DeleteHostRequest) (*Host, error)
+var (
+	validate = validator.New()
+)
+
+func NewHostSet() *HostSet {
+	return &HostSet{
+		Items: []*Host{},
+	}
 }
 
 // QueryHost方法的列表返回对象，如遇到分页或者多个属性返回时方便扩展。方法语法也更加简洁
@@ -44,9 +43,9 @@ type Host struct {
 	*Describe
 }
 
-// func (h *Host) Validate() error {
-// 	return validate.Struct(h)
-// }
+func (h *Host) Validate() error {
+	return validate.Struct(h)
+}
 
 func (h *Host) InjectDefault() {
 	if h.CreateAt == 0 {
@@ -93,7 +92,48 @@ type Describe struct {
 	SerialNumber string `json:"serial_number"`              // 序列号
 }
 
+func NewQueryHostFromHTTP(r *http.Request) *QueryHostRequest {
+	req := NewQueryHostRequest()
+	// query string
+	qs := r.URL.Query()
+	pss := qs.Get("page_size")
+	if pss != "" {
+		req.PageSize, _ = strconv.Atoi(pss)
+	}
+
+	pns := qs.Get("page_number")
+	if pns != "" {
+		req.PageNumber, _ = strconv.Atoi(pns)
+	}
+
+	req.Keywords = qs.Get("kws")
+	return req
+}
+
+func NewQueryHostRequest() *QueryHostRequest {
+	return &QueryHostRequest{
+		PageSize:   20,
+		PageNumber: 1,
+	}
+}
+
 type QueryHostRequest struct {
+	PageSize   int    `json:"page_size"`
+	PageNumber int    `json:"page_number"`
+	Keywords   string `json:"kws"`
+}
+
+func (req *QueryHostRequest) GetPageSize() uint {
+	return uint(req.PageSize)
+}
+func (req *QueryHostRequest) Offset() int64 {
+	return int64((req.PageNumber - 1) * req.PageSize)
+}
+
+func NewDescribeHostRequestWithId(id string) *DescribeHostRequest {
+	return &DescribeHostRequest{
+		Id: id,
+	}
 }
 
 type DescribeHostRequest struct {
